@@ -30,10 +30,6 @@ jobs:
       run: |-
         python main.py -gtk ${{ secrets.GITHUB_TOKEN }}
     # 若该时间段没有 CVE， 则 file://cache/mail.dat 文件不会生成，此时不会发送邮件
-    - name: Send Serverjiang
-      run: |-
-        python sendServerjiang.py -sjkey ${{ secrets.SERVERJ_KEY }}
-    
     - name: Send mail
       uses: lyy289065406/action-send-mail@master
       with:
@@ -57,4 +53,3 @@ jobs:
         git add -A
         git commit -m "Updated by Github Bot" || exit 0
         git push
-
