@@ -21,6 +21,7 @@ import src.notice.page as page
 import src.notice.mail as mail
 import src.notice.qq as qq
 import src.notice.wechat as wechat
+import src.notice.sendsj as sendsj
 import src.utils._git as git
 
 
@@ -46,7 +47,7 @@ def init():
 
 
 
-def main(help, top, auto_commit, gtk, mail_smtp, mail_user, mail_pass, qq_user, qq_pass):
+def main(help, top, auto_commit, gtk, mail_smtp, mail_user, mail_pass, qq_user, qq_pass, sjkey):
     if help:
         log.info(help_info())
 
@@ -64,6 +65,7 @@ def main(help, top, auto_commit, gtk, mail_smtp, mail_user, mail_pass, qq_user, 
             mail.to_mail(gtk, all_cves, mail_smtp, mail_user, mail_pass)
             qq.to_group(all_cves, qq_user, qq_pass)
             wechat.to_wechat(all_cves)
+            sendsj.send_sj(all_cves)
 
             if auto_commit:
                 git.auto_commit()
@@ -124,11 +126,15 @@ def get_sys_args(sys_args) :
             elif sys_args[idx] == '-qp' :
                 idx += 1
                 qq_pass = sys_args[idx]
+            
+            elif sys_args[idx] == '-sjkey' :
+                idx += 1
+                sjkey = sys_args[idx]
 
         except :
             pass
         idx += 1
-    return help, top, auto_commit, gtk, mail_smtp, mail_user, mail_pass, qq_user, qq_pass
+    return help, top, auto_commit, gtk, mail_smtp, mail_user, mail_pass, qq_user, qq_pass,sjkey
 
 
 if __name__ == '__main__':
